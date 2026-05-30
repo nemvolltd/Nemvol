@@ -1,6 +1,6 @@
 const BASE = `font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif`
 
-export const newsletterWelcomeTemplate = ({ email }) => `<!DOCTYPE html>
+export const confirmationEmailTemplate = ({ name, projectType }) => `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#f9fafb;${BASE}">
@@ -16,23 +16,25 @@ export const newsletterWelcomeTemplate = ({ email }) => `<!DOCTYPE html>
 
         <tr>
           <td style="padding:28px 32px;">
-            <p style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827;">You're subscribed.</p>
+            <p style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827;">We got your request, ${name}.</p>
             <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
-              Welcome to Nemvol Insights. Every month we send founders and product teams practical advice on MVPs, product strategy, and growth — no fluff.
+              Thanks for reaching out. We've received your request for a free 30-minute strategy session
+              ${projectType ? `regarding <strong>${projectType}</strong>` : ''} and will get back to you within 24 hours.
             </p>
             <p style="margin:0 0 28px;font-size:15px;color:#374151;line-height:1.7;">
-              Check out our latest thinking at
-              <a href="https://nemvol.com/blog" style="color:#2563eb;text-decoration:none;">nemvol.com/blog</a>.
+              In the meantime, feel free to explore our work at
+              <a href="https://nemvol.com/portfolio" style="color:#2563eb;text-decoration:none;">nemvol.com/portfolio</a>.
             </p>
+
             <p style="margin:0;font-size:14px;color:#6b7280;">
-              Questions? Write to <a href="mailto:hello@nemvol.com" style="color:#2563eb;text-decoration:none;">hello@nemvol.com</a>
+              Questions? Reply to this email or write to
+              <a href="mailto:hello@nemvol.com" style="color:#2563eb;text-decoration:none;">hello@nemvol.com</a>
             </p>
           </td>
         </tr>
 
         <tr>
           <td style="padding:16px 32px;border-top:1px solid #f3f4f6;">
-            <p style="margin:0 0 4px;font-size:11px;color:#9ca3af;">You subscribed with ${email}</p>
             <p style="margin:0;font-size:11px;color:#9ca3af;">© ${new Date().getFullYear()} Nemvol Limited · <a href="https://nemvol.com" style="color:#2563eb;text-decoration:none;">nemvol.com</a></p>
           </td>
         </tr>

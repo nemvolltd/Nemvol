@@ -7,25 +7,25 @@ import LoadingSkeleton from '../ui/LoadingSkeleton'
 import { useBlogPosts, useBlogCategories } from '../../hooks/useBlog'
 
 const BlogGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All')
   const categories = useBlogCategories()
-  const { posts, loading, error } = useBlogPosts({ category: selectedCategory })
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null)
+  const { posts, loading, error } = useBlogPosts({ categoryId: selectedCategoryId })
 
   return (
     <Section className="py-20 bg-gray-50/50">
       {/* Category Filter */}
       <div className="mb-16">
         <div className="flex flex-wrap gap-3 justify-center">
-          {categories.map(category => (
+          {categories.map((category) => (
             <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${selectedCategory === category
+              key={category.id ?? 'all'}
+              onClick={() => setSelectedCategoryId(category.id)}
+              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${selectedCategoryId === category.id
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
                 : 'bg-white text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-gray-100'
                 }`}
             >
-              {category}
+              {category.name}
             </button>
           ))}
         </div>
@@ -35,7 +35,7 @@ const BlogGrid = () => {
       {error && (
         <div className="text-center py-12">
           <p className="text-gray-500 mb-2">{error}</p>
-          <p className="text-sm text-gray-400">Blog posts will load once the backend server is running.</p>
+          <p className="text-sm text-gray-400">Blog posts will load once WordPress is configured and available.</p>
         </div>
       )}
 

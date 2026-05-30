@@ -5,9 +5,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import connectDB from './config/db.js'
 import emailRoutes from './routes/email.js'
-import blogRoutes from './routes/blog.js'
 import { adminLogin } from './middleware/auth.js'
 import { apiLimiter } from './middleware/rateLimit.js'
 
@@ -49,7 +47,6 @@ app.use('/api', apiLimiter)
 
 // ─── Routes ──────────────────────────────────────────────────────────────
 app.use('/api/email', emailRoutes)
-app.use('/api/blog', blogRoutes)
 
 // Admin login endpoint
 app.post('/api/admin/login', adminLogin)
@@ -85,12 +82,9 @@ app.use((err, req, res, next) => {
 
 // ─── Start Server ────────────────────────────────────────────────────────
 const startServer = async () => {
-    await connectDB()
-
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`\n🚀 Nemvol API running on http://localhost:${PORT}`)
         console.log(`📧 Email API:  http://localhost:${PORT}/api/email`)
-        console.log(`📝 Blog API:   http://localhost:${PORT}/api/blog`)
         console.log(`🔐 Admin:      http://localhost:${PORT}/admin`)
         console.log(`❤️  Health:     http://localhost:${PORT}/api/health\n`)
     })

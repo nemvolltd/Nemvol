@@ -1,6 +1,6 @@
 const BASE = `font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif`
 
-export const contactEmailTemplate = ({ name, email, projectType, message }) => `<!DOCTYPE html>
+export const bookingConfirmationTemplate = ({ name, date, phone, message }) => `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#f9fafb;${BASE}">
@@ -16,32 +16,34 @@ export const contactEmailTemplate = ({ name, email, projectType, message }) => `
 
         <tr>
           <td style="padding:28px 32px;">
-            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Strategy Session Request</p>
-            <p style="margin:0 0 24px;font-size:20px;font-weight:700;color:#111827;">${name} wants to connect</p>
+            <p style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827;">Booking request received, ${name}.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#374151;line-height:1.7;">
+              We've received your booking and will follow up within 24 hours to confirm a time and next steps.
+            </p>
 
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;margin-bottom:24px;">
               <tr>
-                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;width:120px;border-bottom:1px solid #f3f4f6;">Name</td>
+                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;width:140px;border-bottom:1px solid #f3f4f6;">Name</td>
                 <td style="padding:10px 16px;font-size:14px;color:#111827;border-bottom:1px solid #f3f4f6;">${name}</td>
               </tr>
+              ${phone ? `<tr>
+                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #f3f4f6;">Phone</td>
+                <td style="padding:10px 16px;font-size:14px;color:#111827;border-bottom:1px solid #f3f4f6;">${phone}</td>
+              </tr>` : ''}
               <tr>
-                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #f3f4f6;">Email</td>
-                <td style="padding:10px 16px;font-size:14px;border-bottom:1px solid #f3f4f6;"><a href="mailto:${email}" style="color:#2563eb;text-decoration:none;">${email}</a></td>
-              </tr>
-              <tr>
-                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;${message ? 'border-bottom:1px solid #f3f4f6;' : ''}">Project</td>
-                <td style="padding:10px 16px;font-size:14px;color:#111827;${message ? 'border-bottom:1px solid #f3f4f6;' : ''}">${projectType || '—'}</td>
+                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;${message ? 'border-bottom:1px solid #f3f4f6;' : ''}">Preferred date</td>
+                <td style="padding:10px 16px;font-size:14px;color:#111827;${message ? 'border-bottom:1px solid #f3f4f6;' : ''}">${date || 'Flexible'}</td>
               </tr>
               ${message ? `<tr>
-                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;vertical-align:top;">Message</td>
+                <td style="padding:10px 16px;font-size:12px;font-weight:600;color:#6b7280;vertical-align:top;">Notes</td>
                 <td style="padding:10px 16px;font-size:14px;color:#374151;line-height:1.6;">${message}</td>
               </tr>` : ''}
             </table>
 
-            <a href="mailto:${email}?subject=Re: Your Strategy Session — Nemvol"
-               style="display:inline-block;background:#2563eb;color:#ffffff;padding:11px 24px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
-              Reply to ${name}
-            </a>
+            <p style="margin:0;font-size:14px;color:#6b7280;">
+              Need to reach us sooner? Reply to this email or write to
+              <a href="mailto:hello@nemvol.com" style="color:#2563eb;text-decoration:none;">hello@nemvol.com</a>
+            </p>
           </td>
         </tr>
 

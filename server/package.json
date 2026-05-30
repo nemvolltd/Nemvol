@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "build": "echo 'No build step required'",
-    "seed": "node src/scripts/seed.js"
+    "build": "echo 'No build step required'"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,10 +16,8 @@
     "express-rate-limit": "^7.5.0",
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
-    "mongoose": "^8.9.5",
-    "morgan": "^1.10.0",
     "jsonwebtoken": "^9.0.2",
-    "resend": "^4.1.2",
-    "slugify": "^1.6.6"
+    "morgan": "^1.10.0",
+    "resend": "^4.1.2"
   }
 }

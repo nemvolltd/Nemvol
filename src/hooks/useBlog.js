@@ -1,15 +1,59 @@
 import { useState, useEffect } from 'react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const WP_API_URL = (import.meta.env.VITE_WORDPRESS_API_URL || 'https://nemvol.wordpress.com/wp-json/wp/v2').replace(/\/$/, '')
 
-/**
- * Hook for fetching blog posts from the backend API.
- */
-export const useBlogPosts = ({ category = 'All', page = 1, limit = 10 } = {}) => {
+const stripHTML = (html = '') => html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+
+const extractFirstImage = (html = '') => {
+    const match = html.match(/<img[^>]+src="([^"]+)"/i)
+    return match ? match[1] : ''
+}
+
+const normalizePost = (post) => {
+    const title = post.title?.rendered || 'Untitled Post'
+    const content = post.content?.rendered || ''
+    const excerpt = stripHTML(post.excerpt?.rendered || '')
+    const authors = post._embedded?.author || []
+    const terms = post._embedded?.['wp:term'] || []
+    const categories = terms.flat().filter((term) => term.taxonomy === 'category')
+    const tags = terms.flat().filter((term) => term.taxonomy === 'post_tag')
+    const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0]
+
+    const category = categories[0]?.name || 'Uncategorized'
+    const image = featuredMedia?.source_url || extractFirstImage(content) || ''
+    const author = authors[0]?.name || 'Nemvol Team'
+    const wordCount = stripHTML(content).split(/\s+/).filter(Boolean).length
+    const readTime = `${Math.max(1, Math.ceil(wordCount / 220))} min read`
+
+    return {
+        id: post.id,
+        slug: post.slug,
+        title,
+        excerpt,
+        content,
+        date: post.date,
+        author,
+        image,
+        category,
+        tags: tags.map((tag) => tag.name),
+        keywords: [],
+        metaDescription: excerpt,
+        readTime
+    }
+}
+
+const fetchJSON = async (url) => {
+    const res = await fetch(url)
+    if (!res.ok) {
+        throw new Error(`Fetch failed: ${res.status}`)
+    }
+    return res.json()
+}
+
+export const useBlogPosts = ({ categoryId = null, page = 1, limit = 10 } = {}) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 })
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -17,37 +61,25 @@ export const useBlogPosts = ({ category = 'All', page = 1, limit = 10 } = {}) =>
             setError(null)
 
             try {
-                const params = new URLSearchParams({ page, limit })
-                if (category && category !== 'All') {
-                    params.set('category', category)
-                }
+                const params = new URLSearchParams({ per_page: limit, page, _embed: 'true' })
+                if (categoryId) params.set('categories', String(categoryId))
 
-                const res = await fetch(`${API_URL}/api/blog?${params}`)
-                const data = await res.json()
-
-                if (data.success) {
-                    setPosts(data.data)
-                    setPagination(data.pagination)
-                } else {
-                    setError('Failed to load posts')
-                }
+                const data = await fetchJSON(`${WP_API_URL}/posts?${params}`)
+                setPosts(data.map(normalizePost))
             } catch (err) {
                 console.error('Blog fetch error:', err)
-                setError('Could not connect to server')
+                setError('Could not load blog posts')
             } finally {
                 setLoading(false)
             }
         }
 
         fetchPosts()
-    }, [category, page, limit])
+    }, [categoryId, page, limit])
 
-    return { posts, loading, error, pagination }
+    return { posts, loading, error }
 }
 
-/**
- * Hook for fetching a single blog post by slug.
- */
 export const useBlogPost = (slug) => {
     const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -61,17 +93,17 @@ export const useBlogPost = (slug) => {
             setError(null)
 
             try {
-                const res = await fetch(`${API_URL}/api/blog/${slug}`)
-                const data = await res.json()
+                const params = new URLSearchParams({ slug, _embed: 'true' })
+                const data = await fetchJSON(`${WP_API_URL}/posts?${params}`)
 
-                if (data.success) {
-                    setPost(data.data)
+                if (Array.isArray(data) && data.length > 0) {
+                    setPost(normalizePost(data[0]))
                 } else {
                     setError('Post not found')
                 }
             } catch (err) {
                 console.error('Blog post fetch error:', err)
-                setError('Could not connect to server')
+                setError('Could not load blog post')
             } finally {
                 setLoading(false)
             }
@@ -83,23 +115,17 @@ export const useBlogPost = (slug) => {
     return { post, loading, error }
 }
 
-/**
- * Hook for fetching blog categories.
- */
 export const useBlogCategories = () => {
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([{ id: null, name: 'All' }])
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await fetch(`${API_URL}/api/blog/categories`)
-                const data = await res.json()
-                if (data.success) {
-                    setCategories(['All', ...data.data])
-                }
+                const params = new URLSearchParams({ per_page: 100, orderby: 'name', order: 'asc' })
+                const data = await fetchJSON(`${WP_API_URL}/categories?${params}`)
+                setCategories([{ id: null, name: 'All' }, ...data.map((category) => ({ id: category.id, name: category.name }))])
             } catch (err) {
                 console.error('Categories fetch error:', err)
-                setCategories(['All'])
             }
         }
 

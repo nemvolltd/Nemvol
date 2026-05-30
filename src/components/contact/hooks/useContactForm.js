@@ -1,14 +1,7 @@
 import { useState } from 'react'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE = import.meta.env.DEV ? (import.meta.env.VITE_API_URL || 'http://localhost:5000') : ''
 
-/**
- * Custom hook for submitting forms to the backend API.
- * Replaces the old useWeb3Form hook.
- *
- * @param {Object} initialData - Initial form field values
- * @param {string} endpoint - API endpoint path (e.g. '/api/email/contact')
- */
 const useContactForm = (initialData, endpoint = '/api/email/contact') => {
     const [formData, setFormData] = useState(initialData)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -29,7 +22,7 @@ const useContactForm = (initialData, endpoint = '/api/email/contact') => {
         setStatus(null)
 
         try {
-            const response = await fetch(`${API_URL}${endpoint}`, {
+            const response = await fetch(`${API_BASE}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

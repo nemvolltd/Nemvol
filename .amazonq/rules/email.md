@@ -1,0 +1,3 @@
+Create a simple, professional email template with a mature and minimal design. Use a plain white background, clean typography, and subtle spacing. Avoid unnecessary graphics or decorative elements. Structure the email with a small header (logo or text), a clear title, short and direct body content, and a simple footer with basic contact information.
+
+The tone should feel formal, trustworthy, and straightforward. Use one accent color only for links or buttons, and keep everything aligned and easy to scan. Ensure the layout is fully responsive and optimized for readability on both mobile and desktop.
