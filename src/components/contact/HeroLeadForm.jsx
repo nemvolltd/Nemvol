@@ -7,7 +7,7 @@ import FormStatus from './base/FormStatus'
 import useContactForm from './hooks/useContactForm'
 
 const HeroLeadForm = ({ compact = false }) => {
-    const { formData, isSubmitting, status, errorMessage, handleChange, handleSubmit } = useContactForm({
+    const { formData, isSubmitting, status, handleChange, handleSubmit } = useContactForm({
         name: '',
         email: '',
         projectType: '',

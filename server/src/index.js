@@ -71,7 +71,7 @@ app.use((req, res) => {
 })
 
 // ─── Error Handler ───────────────────────────────────────────────────────
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
     console.error('Server error:', err.stack)
     res.status(500).json({
         error: process.env.NODE_ENV === 'production'

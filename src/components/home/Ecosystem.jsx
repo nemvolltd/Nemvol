@@ -5,7 +5,7 @@ import payImg from '../../assets/ecosystem-pay.png'
 import shipImg from '../../assets/ecosystem-ship.png'
 import startupImg from '../../assets/ecosystem-startup.png'
 
-const EcosystemCard = ({ title, description, image, className, delay }) => (
+const EcosystemCard = ({ title, image, className, delay }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}

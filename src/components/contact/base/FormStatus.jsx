@@ -5,7 +5,6 @@ const FormStatus = ({ status, successMessage, errorMessage }) => {
     if (!status) return null
 
     const isSuccess = status === 'success'
-    const isError = status === 'error'
 
     return (
         <motion.div

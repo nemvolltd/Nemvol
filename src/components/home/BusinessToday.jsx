@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, Instagram, Landmark, Bike, FileText, XCircle, AlertCircle, Clock } from 'lucide-react'
-import { useState } from 'react'
 
 const ProblemNode = ({ icon: Icon, label, status, x, y, delay }) => (
   <motion.div

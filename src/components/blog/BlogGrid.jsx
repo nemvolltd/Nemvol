@@ -140,7 +140,7 @@ const BlogGrid = () => {
         >
           <div className="text-gray-400 mb-4">No insights found in this category yet.</div>
           <button
-            onClick={() => setSelectedCategory('All')}
+            onClick={() => setSelectedCategoryId(null)}
             className="text-blue-600 font-bold hover:underline"
           >
             Show all posts
