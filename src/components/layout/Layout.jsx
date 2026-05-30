@@ -5,7 +5,7 @@ import Breadcrumb from '../ui/Breadcrumb'
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <Breadcrumb />
       <main className="flex-1">

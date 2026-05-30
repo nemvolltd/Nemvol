@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Section from '../ui/Section'
 
 const phases = [
   {
     step: '01',
-    title: 'Discover',
+    title: 'Plan',
     description: 'Understand first',
-    details: 'We dig deep into the problem, users, and market before writing a single line of code. This prevents costly pivots later.',
-    deliverables: ['User Research', 'Market Analysis', 'MVP Scope'],
+    details: 'We talk about your idea, look at your competitors, and agree on what to build. This keeps costs low.',
+    deliverables: ['Competitor Check', 'Feature List', 'Timeline Map'],
     svg: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.35-4.35" />
       </svg>
@@ -19,11 +18,11 @@ const phases = [
   {
     step: '02',
     title: 'Design',
-    description: 'Craft experiences',
-    details: 'Translate insights into intuitive, scalable product experiences. Wireframes and prototypes validated before build.',
-    deliverables: ['Wireframes', 'UI Mockups', 'Prototype'],
+    description: 'Draw the app',
+    details: 'We draw what the app will look like. You click through it to see how it works before we write code.',
+    deliverables: ['Sleek Wireframes', 'Visual Screens', 'Clickable Prototype'],
     svg: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
         <path d="M12 19l7-7 3 3-7 7-3-3z" />
         <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
         <path d="m2 2 7.586 7.586" />
@@ -34,11 +33,11 @@ const phases = [
   {
     step: '03',
     title: 'Build',
-    description: 'Agile delivery',
-    details: 'Develop using agile, milestone-based sprints. Regular demos keep you in control. No surprises.',
-    deliverables: ['Clean Code', 'API Integration', 'Testing'],
+    description: 'Write the code',
+    details: 'Our developers build your app. We show you our progress every week so there are no surprises.',
+    deliverables: ['Clean Code', 'Working Database', 'Secure Setup'],
     svg: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
         <polyline points="16 18 22 12 16 6" />
         <polyline points="8 6 2 12 8 18" />
       </svg>
@@ -46,12 +45,12 @@ const phases = [
   },
   {
     step: '04',
-    title: 'Validate',
-    description: 'Measure traction',
-    details: 'Launch to real users and measure what matters. Usage data, performance metrics, and user feedback drive next steps.',
-    deliverables: ['Analytics', 'User Testing', 'Performance'],
+    title: 'Launch',
+    description: 'Go live',
+    details: 'We launch your app to real users, set up tracking, and make sure everything runs fast and secure.',
+    deliverables: ['Fast Deployment', 'User Analytics', 'Secure Servers'],
     svg: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
         <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
@@ -60,11 +59,11 @@ const phases = [
   {
     step: '05',
     title: 'Grow',
-    description: 'Iterate & scale',
-    details: 'We stay beyond deployment. Continuous iteration based on real data to optimize and scale your product.',
-    deliverables: ['CRO', 'Feature Tuning', 'Support'],
+    description: 'Get more sales',
+    details: 'We look at how people use your app and make regular updates to get you more sales.',
+    deliverables: ['App Updates', 'Bug Support', 'Ad Setups'],
     svg: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
         <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
         <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
         <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
@@ -75,16 +74,14 @@ const phases = [
 ]
 
 const DeliveryMethodology = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null)
-
   return (
     <Section background="white" className="py-24 md:py-32 relative">
       {/* Background Decorative Text */}
-      <div className="absolute top-20 left-10 opacity-[0.03] pointer-events-none select-none uppercase font-black text-[12vw] whitespace-nowrap leading-none tracking-tighter">
+      <div className="absolute top-20 left-10 opacity-[0.015] pointer-events-none select-none uppercase font-black text-[12vw] whitespace-nowrap leading-none tracking-tighter">
         Our Approach
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6">
         {/* Header */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
           <div>
@@ -92,7 +89,7 @@ const DeliveryMethodology = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-[0.2em] mb-8"
             >
               Methodology
             </motion.div>
@@ -102,10 +99,10 @@ const DeliveryMethodology = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl font-bold text-gray-900 leading-[0.9] tracking-tight"
+              className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight"
             >
-              Simple Process, <br />
-              <span className="text-blue-600 italic">Proven Results.</span>
+              Simple process, <br />
+              <span className="text-blue-700 italic">proven results.</span>
             </motion.h2>
           </div>
 
@@ -114,74 +111,64 @@ const DeliveryMethodology = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="lg:pt-20"
+            className="lg:pt-16"
           >
-            <p className="text-xl md:text-2xl text-gray-500 max-w-xl leading-relaxed">
-              Our product-first, outcome-driven methodology reduces risk and accelerates value creation. Clarity, accountability, and measurable results.
+            <p className="text-lg md:text-xl text-gray-500 max-w-xl leading-relaxed">
+              We break down the build process into 5 simple steps. You will always know what we are doing, when we will finish, and how much it costs.
             </p>
           </motion.div>
         </div>
 
         {/* Timeline Grid */}
         <div className="relative">
-          {/* Connecting Line */}
-          <div className="hidden lg:block absolute top-28 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {phases.map((phase, index) => (
               <motion.div
                 key={phase.step}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative flex flex-col items-center text-center group"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                className="relative bg-white rounded-[2rem] p-8 border border-gray-100 shadow-lg shadow-gray-200/10 hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col justify-between group"
               >
-                {/* Icon Container */}
-                <motion.div
-                  whileHover={{ scale: 1.1, y: -4 }}
-                  className="w-20 h-20 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center justify-center mb-6 group-hover:border-blue-200 group-hover:shadow-lg transition-all duration-300 cursor-pointer"
-                >
-                  <div className="text-gray-400 group-hover:text-blue-600 transition-colors duration-300">
-                    {phase.svg}
+                <div>
+                  {/* Card Header (Icon and Step Number) */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:bg-blue-100 transition-colors duration-300">
+                      {phase.svg}
+                    </div>
+                    <span className="text-3xl font-black text-blue-100 group-hover:text-blue-200 transition-colors duration-300 leading-none">
+                      {phase.step}
+                    </span>
                   </div>
-                </motion.div>
 
-                {/* Tooltip */}
-                <AnimatePresence>
-                  {hoveredIndex === index && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full mt-4 left-1/2 -translate-x-1/2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-5 z-20"
+                  {/* Step Title */}
+                  <h3 className="text-xl font-extrabold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors duration-300">
+                    {phase.title}
+                  </h3>
+
+                  {/* Subtitle */}
+                  <div className="text-xs uppercase font-extrabold text-blue-500 tracking-wider mb-4">
+                    {phase.description}
+                  </div>
+
+                  {/* Details */}
+                  <p className="text-sm text-gray-500 leading-relaxed mb-6 font-medium">
+                    {phase.details}
+                  </p>
+                </div>
+
+                {/* Deliverables tags */}
+                <div className="space-y-2 pt-4 border-t border-gray-50 mt-auto">
+                  {phase.deliverables.map((item) => (
+                    <span
+                      key={item}
+                      className="inline-block mr-1.5 mb-1.5 px-2.5 py-1 bg-gray-50 group-hover:bg-blue-50/30 text-gray-500 group-hover:text-blue-700 text-[10px] font-bold uppercase tracking-wider rounded-lg border border-gray-100/50 group-hover:border-blue-50 transition-colors"
                     >
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-l border-t border-gray-100 rotate-45"></div>
-                      <p className="text-sm text-gray-600 leading-relaxed mb-4">{phase.details}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {phase.deliverables.map((item) => (
-                          <span key={item} className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-full font-medium">
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Step Number */}
-                <span className="text-xs font-bold text-blue-600 mb-2">{phase.step}</span>
-
-                {/* Title */}
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  {phase.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-sm text-gray-500">{phase.description}</p>
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>

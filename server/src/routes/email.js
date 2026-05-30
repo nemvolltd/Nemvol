@@ -5,6 +5,7 @@ import { contactEmailTemplate } from '../templates/contactEmail.js'
 import { newsletterWelcomeTemplate } from '../templates/newsletterWelcome.js'
 import { adminNotificationTemplate } from '../templates/adminNotification.js'
 import { emailLimiter } from '../middleware/rateLimit.js'
+import { sendWhatsApp } from '../utils/whatsapp.js'
 
 const router = Router()
 
@@ -28,24 +29,30 @@ router.post('/contact', [
     const { name, email, projectType, message } = req.body
 
     try {
-        // Send branded email to admin
-        await resend.emails.send({
-            from: process.env.FROM_EMAIL,
-            to: process.env.RECIPIENT_EMAIL,
-            subject: `New Consultation Request from ${name}`,
-            html: contactEmailTemplate({ name, email, projectType, message })
-        })
-
-        // Send admin notification
-        await resend.emails.send({
-            from: process.env.FROM_EMAIL,
-            to: process.env.RECIPIENT_EMAIL,
-            subject: `[Nemvol] New Contact: ${name}`,
-            html: adminNotificationTemplate({
-                type: 'contact',
-                data: { name, email, projectType, message }
-            })
-        })
+        await Promise.all([
+            // Notify Nemvol with full submission details
+            resend.emails.send({
+                from: process.env.FROM_EMAIL,
+                to: process.env.RECIPIENT_EMAIL,
+                replyTo: email,
+                subject: `New Strategy Session Request from ${name}`,
+                html: contactEmailTemplate({ name, email, projectType, message })
+            }),
+            // Confirmation email to the user
+            resend.emails.send({
+                from: process.env.FROM_EMAIL,
+                to: email,
+                subject: `We got your request, ${name} 👋`,
+                html: adminNotificationTemplate({
+                    type: 'contact',
+                    data: { name, email, projectType, message }
+                })
+            }),
+            // WhatsApp notification
+            sendWhatsApp(
+                `📩 New Strategy Session Request\n\nName: ${name}\nEmail: ${email}\nProject: ${projectType || 'Not specified'}${message ? `\nMessage: ${message}` : ''}`
+            )
+        ])
 
         res.json({ success: true, message: 'Consultation request sent successfully!' })
     } catch (error) {

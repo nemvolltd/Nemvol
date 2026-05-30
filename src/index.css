@@ -2,12 +2,16 @@
 @import 'tailwindcss';
 
 /* Base typography */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: var(--leading-normal);
   letter-spacing: var(--tracking-normal);
-  
 }
 
 /* Custom scrollbar */
