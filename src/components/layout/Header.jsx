@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, ChevronDown, ArrowRight, Lock, Mail, Phone, ExternalLink } from 'lucide-react'
+import { Menu, X, ChevronDown, ArrowRight, Mail, Phone, ExternalLink } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import { COMPANY_INFO } from '../../utils/constants'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const location = useLocation()
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
@@ -186,16 +185,8 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Right: Uppercase LOGIN Text + BOOK A DEMO Pill Button */}
+            {/* Right: BOOK A DEMO Pill Button */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-              <button
-                type="button"
-                onClick={() => setIsLoginModalOpen(true)}
-                className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
-              >
-                LOGIN
-              </button>
-
               <Link
                 to="/contact"
                 className="bg-blue-600 text-white px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 transition-all duration-200 flex items-center gap-1.5"
@@ -352,18 +343,7 @@ const Header = () => {
                 </div>
 
                 {/* Secondary Actions in Drawer */}
-                <div className="pt-4 space-y-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsOpen(false)
-                      setIsLoginModalOpen(true)
-                    }}
-                    className="w-full py-3 px-4 rounded-xl border border-gray-200 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-50 transition-colors text-center"
-                  >
-                    LOGIN TO PORTAL
-                  </button>
-
+                <div className="pt-4">
                   <Link
                     to="/contact"
                     onClick={() => setIsOpen(false)}
@@ -391,103 +371,6 @@ const Header = () => {
               </div>
             </motion.div>
           </>
-        )}
-      </AnimatePresence>
-
-      {/* Client Portal Login Modal */}
-      <AnimatePresence>
-        {isLoginModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsLoginModalOpen(false)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            />
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 z-10"
-            >
-              <button
-                onClick={() => setIsLoginModalOpen(false)}
-                className="absolute top-5 right-5 p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              >
-                <X size={18} />
-              </button>
-
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
-                <Lock size={22} />
-              </div>
-
-              <h3 className="text-xl font-bold text-gray-900">Client Portal Login</h3>
-              <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                Access your real-time project milestones, roadmap sprints, and deliverable artifacts.
-              </p>
-
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  alert('Portal authentication service will connect to your project workspace.')
-                  setIsLoginModalOpen(false)
-                }}
-                className="mt-6 space-y-4"
-              >
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1.5">
-                    Work Email
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="name@company.com"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-600">
-                      Password
-                    </label>
-                    <span className="text-xs text-blue-600 hover:underline cursor-pointer">
-                      Forgot?
-                    </span>
-                  </div>
-                  <input
-                    type="password"
-                    required
-                    placeholder="••••••••"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-blue-500/20"
-                >
-                  SIGN IN TO PORTAL
-                </button>
-              </form>
-
-              <div className="mt-6 pt-5 border-t border-gray-100 text-center">
-                <p className="text-xs text-gray-500">
-                  Looking to start a new build?{' '}
-                  <Link
-                    to="/contact"
-                    onClick={() => setIsLoginModalOpen(false)}
-                    className="font-bold text-blue-600 hover:underline"
-                  >
-                    Book a demo
-                  </Link>
-                </p>
-              </div>
-            </motion.div>
-          </div>
         )}
       </AnimatePresence>
     </>
