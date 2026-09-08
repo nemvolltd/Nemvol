@@ -1,13 +1,13 @@
 {
   "name": "nemvol-server",
   "version": "1.0.0",
-  "description": "Backend API for Nemvol agency website — blog management and email handling",
+  "description": "Backend API for Nemvol agency website \u2014 blog management and email handling",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js",
-    "build": "echo 'No build step required'"
+    "dev": "node init && node --watch src/index.js",
+    "start": "node init && node src/index.js",
+    "build": "node init && echo 'No build step required'"
   },
   "dependencies": {
     "cors": "^2.8.5",
