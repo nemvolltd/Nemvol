@@ -10,7 +10,6 @@ import SectionSkeleton from '../../components/ui/SectionSkeleton'
 const AnimatedShowcase = lazy(() => import('../../components/home/AnimatedShowcase'))
 const Ecosystem = lazy(() => import('../../components/home/Ecosystem'))
 const BuiltForEveryBusiness = lazy(() => import('../../components/home/BuiltForEveryBusiness'))
-const PricingSection = lazy(() => import('../../components/home/PricingSection'))
 const WhyNemvol = lazy(() => import('../../components/home/WhyNemvol'))
 const Showdown = lazy(() => import('../../components/home/Showdown'))
 const FooterCTA = lazy(() => import('../../components/home/FooterCTA'))
@@ -50,11 +49,6 @@ const Home = () => {
       {/* Scalability / Adaptability */}
       <Suspense fallback={<SectionSkeleton />}>
         <BuiltForEveryBusiness />
-      </Suspense>
-
-      {/* Pricing Options */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <PricingSection />
       </Suspense>
 
       {/* Below the Fold Content - Lazy Loaded */}

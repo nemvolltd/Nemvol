@@ -8,7 +8,7 @@ const Section = ({
   const backgrounds = {
     white: 'bg-white',
     gray: 'bg-gray-50',
-    dark: 'bg-gray-900 text-white',
+    dark: 'bg-[#002752] text-white',
     none: ''
   }
 

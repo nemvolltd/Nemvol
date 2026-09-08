@@ -137,12 +137,12 @@ const BlogPostPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="mt-16 p-8 md:p-12 bg-gray-900 rounded-[2rem] text-center"
+                    className="mt-16 p-8 md:p-12 bg-[#002752] border border-blue-900/50 rounded-[2rem] text-center shadow-2xl shadow-blue-950/20"
                 >
                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                         Ready to build your MVP?
                     </h3>
-                    <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+                    <p className="text-blue-100/75 mb-8 max-w-lg mx-auto">
                         Book a free 30-minute strategy call and let's turn your idea into a product.
                     </p>
                     <Link

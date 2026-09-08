@@ -15,7 +15,7 @@ const LeadMagnet = () => {
     return (
         <Section className="hidden md:block py-24 bg-white relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="relative bg-gray-900 rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-900/10">
+                <div className="relative bg-[#002752] border border-blue-900/60 rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-950/40">
                     {/* Background Accents */}
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/20 rounded-full blur-[100px] -mr-40 -mt-40" />
                     <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[80px] -ml-20 -mb-20" />

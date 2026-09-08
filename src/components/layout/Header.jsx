@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Smartphone, Mail, Phone, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, ArrowRight, Lock, Mail, Phone, ExternalLink } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
-import Logo from '../ui/Logo'
 import { COMPANY_INFO } from '../../utils/constants'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [activeDropdown, setActiveDropdown] = useState(null)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const location = useLocation()
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
@@ -15,88 +16,227 @@ const Header = () => {
     restDelta: 0.001
   })
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false)
+    setActiveDropdown(null)
+  }, [location.pathname])
+
   const navigation = [
-    { name: 'Services', href: '/services' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'About', href: '/about' },
-    { name: 'Blog', href: '/blog' },
+    {
+      name: 'Services',
+      href: '/services',
+      hasDropdown: true,
+      items: [
+        { name: 'Web Applications', desc: 'Scalable cloud-native platforms', href: '/services' },
+        { name: 'Mobile Apps', desc: 'iOS & Android native development', href: '/services' },
+        { name: 'UI/UX & Product Design', desc: 'High-conversion intuitive interfaces', href: '/services' },
+        { name: 'MVP Development', desc: 'Rapid 8-12 week market validation', href: '/services' },
+      ]
+    },
+    {
+      name: 'Portfolio',
+      href: '/portfolio',
+      hasDropdown: true,
+      items: [
+        { name: 'Case Studies', desc: 'Real products delivered with impact', href: '/portfolio' },
+        { name: 'Client Success Stories', desc: 'Testimonials and metrics', href: '/portfolio' },
+        { name: 'Technical Architecture', desc: 'Enterprise scalability benchmarks', href: '/portfolio' },
+      ]
+    },
+    {
+      name: 'About',
+      href: '/about',
+      hasDropdown: true,
+      items: [
+        { name: 'Company Story', desc: 'Our engineering mission & team ethos', href: '/about' },
+        { name: 'Core Values', desc: 'Quality, velocity, and transparency', href: '/about' },
+        { name: 'Strategic Partnerships', desc: 'Collaborating for long-term growth', href: '/about' },
+      ]
+    },
+    {
+      name: 'Blog',
+      href: '/blog',
+      hasDropdown: true,
+      items: [
+        { name: 'Tech Insights', desc: 'Modern software engineering breakdowns', href: '/blog' },
+        { name: 'Product Guides', desc: 'Strategic tips for startups & scale-ups', href: '/blog' },
+        { name: 'FAQ', desc: 'Common questions on timelines & pricing', href: '/faq' },
+      ]
+    },
   ]
 
   const isActive = (path) => location.pathname === path
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
-        <nav className="bg-white/80 backdrop-blur-xl border-b border-gray-100 relative">
-          {/* Scroll Progress Bar */}
-          <motion.div
-            className="absolute bottom-0 left-0 right-0 h-[3px] bg-blue-600 origin-left z-20"
-            style={{ scaleX }}
-          />
+      {/* Floating Island Navbar */}
+      <header className="fixed top-3 sm:top-5 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 pointer-events-none transition-all duration-300">
+        <div className="max-w-7xl mx-auto pointer-events-auto">
+          <nav className="bg-white/90 backdrop-blur-xl border border-gray-200/80 rounded-2xl shadow-[0_4px_25px_-4px_rgba(0,0,0,0.06)] px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between relative">
+            
+            {/* Scroll Progress Bar tucked into the bottom of the pill */}
+            <div className="absolute bottom-0 left-4 right-4 h-[2px] overflow-hidden rounded-full pointer-events-none">
+              <motion.div
+                className="h-full bg-blue-600 origin-left"
+                style={{ scaleX }}
+              />
+            </div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center">
-            {/* Logo */}
-            <Link to="/" className="flex items-center group flex-shrink-0">
-              <div className="flex items-center gap-2 transition-transform duration-300 group-hover:scale-[1.02]">
-                <Logo className="h-12 w-auto" iconOnly={false} />
+            {/* Left: Brand Logo & Uppercase Title */}
+            <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
+              <div className="h-8 w-8 relative flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+                <img
+                  src="/image.svg"
+                  alt="Nemvol Logo"
+                  className="w-full h-full object-contain"
+                  width="32"
+                  height="32"
+                />
               </div>
+              <span className="text-base sm:text-lg font-black tracking-[0.16em] uppercase text-gray-900 group-hover:text-blue-600 transition-colors">
+                Nemvol
+              </span>
             </Link>
 
-            {/* Desktop Navigation - Centered */}
-            <div className="hidden lg:flex items-center justify-center flex-1 px-8">
-              <div className="flex items-center gap-1">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${isActive(item.href)
-                      ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                      }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+            {/* Center: Navigation Links with Downward Chevron */}
+            <div className="hidden lg:flex items-center justify-center flex-1 px-6">
+              <div className="flex items-center gap-1 xl:gap-2">
+                {navigation.map((item) => {
+                  const isItemActive = isActive(item.href)
+                  const isHovered = activeDropdown === item.name
+
+                  return (
+                    <div
+                      key={item.name}
+                      className="relative"
+                      onMouseEnter={() => setActiveDropdown(item.name)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                    >
+                      <Link
+                        to={item.href}
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-medium rounded-xl transition-all duration-200 group ${
+                          isItemActive
+                            ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100/70'
+                        }`}
+                      >
+                        <span>{item.name}</span>
+                        {item.hasDropdown && (
+                          <ChevronDown
+                            size={13}
+                            className={`transition-transform duration-200 ${
+                              isHovered ? 'rotate-180 text-blue-600' : 'text-gray-400 group-hover:text-gray-700'
+                            }`}
+                          />
+                        )}
+                      </Link>
+
+                      {/* Dropdown Menu on Desktop */}
+                      <AnimatePresence>
+                        {isHovered && item.hasDropdown && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                            transition={{ duration: 0.18, ease: 'easeOut' }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 min-w-[280px]"
+                          >
+                            <div className="bg-white/95 backdrop-blur-2xl border border-gray-200/80 rounded-2xl shadow-xl shadow-gray-900/10 p-2.5">
+                              <div className="px-3 py-1.5 border-b border-gray-100 mb-1 flex items-center justify-between">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                                  {item.name}
+                                </span>
+                                <Link
+                                  to={item.href}
+                                  className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                                >
+                                  View all
+                                  <ArrowRight size={11} />
+                                </Link>
+                              </div>
+
+                              <div className="space-y-1">
+                                {item.items.map((subItem) => (
+                                  <Link
+                                    key={subItem.name}
+                                    to={subItem.href}
+                                    className="block px-3 py-2 rounded-xl text-left hover:bg-blue-50/60 transition-colors group/sub"
+                                  >
+                                    <div className="text-[13px] font-semibold text-gray-800 group-hover/sub:text-blue-600 flex items-center justify-between">
+                                      <span>{subItem.name}</span>
+                                      <ArrowRight
+                                        size={12}
+                                        className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-blue-600"
+                                      />
+                                    </div>
+                                    <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                                      {subItem.desc}
+                                    </p>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
-            {/* Desktop CTA */}
-            <div className="hidden lg:flex items-center flex-shrink-0">
+            {/* Right: Uppercase LOGIN Text + BOOK A DEMO Pill Button */}
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-gray-700 hover:text-blue-600 transition-colors cursor-pointer"
+              >
+                LOGIN
+              </button>
+
               <Link
                 to="/contact"
-                className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-200 transition-all duration-300 flex items-center gap-2 group/btn"
+                className="bg-blue-600 text-white px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/25 active:scale-95 transition-all duration-200 flex items-center gap-1.5"
               >
-                Start Project
-                <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                <span>BOOK A DEMO</span>
               </Link>
             </div>
 
-            {/* Spacer for mobile to push menu button right */}
-            <div className="flex-1 lg:hidden" />
+            {/* Mobile Actions: Compact CTA + Menu Toggle */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <Link
+                to="/contact"
+                className="bg-blue-600 text-white px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors"
+              >
+                BOOK A DEMO
+              </Link>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2.5 rounded-xl hover:bg-gray-100 transition-colors text-gray-900"
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={isOpen ? 'close' : 'open'}
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {isOpen ? <X size={26} /> : <Menu size={26} />}
-                </motion.div>
-              </AnimatePresence>
-            </button>
-          </div>
-        </nav>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle navigation menu"
+                className="p-2 rounded-xl hover:bg-gray-100 text-gray-800 transition-colors"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={isOpen ? 'close' : 'open'}
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {isOpen ? <X size={22} /> : <Menu size={22} />}
+                  </motion.div>
+                </AnimatePresence>
+              </button>
+            </div>
+
+          </nav>
+        </div>
       </header>
 
-
-      {/* Mobile Sidebar */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -106,115 +246,252 @@ const Header = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 lg:hidden"
             />
 
-            {/* Sidebar */}
+            {/* Drawer Container */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{
                 type: 'spring',
-                damping: 30,
-                stiffness: 180,
-                mass: 0.8
+                damping: 28,
+                stiffness: 220,
               }}
-              className="fixed top-0 right-0 h-full w-full sm:w-80 bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 right-0 h-full w-full sm:w-88 bg-white shadow-2xl z-50 lg:hidden flex flex-col overflow-y-auto"
             >
-              <div className="flex flex-col h-full">
-                {/* Sidebar Header */}
-                <div className="p-6 border-b border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center text-blue-600">
-                      <Logo className="h-16 w-auto" iconOnly={false} />
-                    </Link>
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <X size={20} />
-                    </button>
+              {/* Drawer Header */}
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <Link
+                  to="/"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2.5"
+                >
+                  <div className="h-8 w-8 relative flex-shrink-0">
+                    <img
+                      src="/image.svg"
+                      alt="Nemvol Logo"
+                      className="w-full h-full object-contain"
+                    />
                   </div>
-                  <p className="text-sm text-gray-500 mt-4 leading-relaxed">
-                    Product Development & Digital Solutions Agency
-                  </p>
-                </div>
+                  <span className="text-lg font-black tracking-[0.16em] uppercase text-gray-900">
+                    Nemvol
+                  </span>
+                </Link>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 rounded-xl hover:bg-gray-100 text-gray-600 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
-                {/* Navigation Links */}
-                <div className="flex-1 p-6">
-                  <nav className="space-y-1 mb-8">
-                    <AnimatePresence>
-                      {navigation.map((item, index) => (
-                        <motion.div
-                          key={item.name}
-                          initial={{ opacity: 0, x: 15 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: index * 0.04,
-                            ease: [0.22, 1, 0.36, 1]
-                          }}
-                        >
+              {/* Drawer Navigation Links */}
+              <div className="flex-1 p-6 space-y-4">
+                <div className="space-y-1">
+                  {navigation.map((item) => {
+                    const isItemActive = isActive(item.href)
+                    const isExpanded = activeDropdown === item.name
+
+                    return (
+                      <div key={item.name} className="border-b border-gray-50 pb-2">
+                        <div className="flex items-center justify-between">
                           <Link
                             to={item.href}
                             onClick={() => setIsOpen(false)}
-                            className={`group flex items-center justify-between px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 ${isActive(item.href)
-                              ? 'bg-blue-600 text-white shadow-lg shadow-blue-200/50'
-                              : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
-                              }`}
+                            className={`flex-1 py-2 text-base font-semibold transition-colors ${
+                              isItemActive ? 'text-blue-600' : 'text-gray-800'
+                            }`}
                           >
-                            <span>{item.name}</span>
-                            <ArrowRight size={16} className={`transition-transform group-hover:translate-x-1 ${isActive(item.href) ? 'text-white' : 'text-gray-400'
-                              }`} />
+                            {item.name}
                           </Link>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </nav>
+                          {item.hasDropdown && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActiveDropdown(isExpanded ? null : item.name)
+                              }
+                              className="p-2 text-gray-400 hover:text-gray-700 transition-colors"
+                            >
+                              <ChevronDown
+                                size={18}
+                                className={`transition-transform duration-200 ${
+                                  isExpanded ? 'rotate-180 text-blue-600' : ''
+                                }`}
+                              />
+                            </button>
+                          )}
+                        </div>
 
-                  {/* CTA Section */}
-                  <div className="bg-gray-50 rounded-3xl p-8 mb-6 border border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Start?</h3>
-                    <p className="text-sm text-gray-500 mb-6 leading-relaxed text-balance">Get a senior-led team working on your next digital product.</p>
-                    <Link
-                      to="/contact"
-                      onClick={() => setIsOpen(false)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-100 flex items-center justify-center group"
-                    >
-                      Start Project
-                      <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
+                        {/* Mobile Submenu */}
+                        <AnimatePresence>
+                          {isExpanded && item.hasDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden pl-3 py-1 space-y-2"
+                            >
+                              {item.items.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  to={subItem.href}
+                                  onClick={() => setIsOpen(false)}
+                                  className="block py-1.5 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )
+                  })}
                 </div>
 
-                {/* Footer Contact */}
-                <div className="p-6 border-t border-gray-100 bg-gray-50">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <Mail size={16} className="text-blue-500" />
-                      <span>nemvolltd@gmail.com</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <Phone size={16} className="text-blue-500" />
-                      <span>{COMPANY_INFO.phone}</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <p className="text-xs text-gray-500 text-center">
-                      © 2026 Nemvol. All rights reserved.
-                    </p>
-                  </div>
+                {/* Secondary Actions in Drawer */}
+                <div className="pt-4 space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false)
+                      setIsLoginModalOpen(true)
+                    }}
+                    className="w-full py-3 px-4 rounded-xl border border-gray-200 text-xs font-bold uppercase tracking-wider text-gray-700 hover:bg-gray-50 transition-colors text-center"
+                  >
+                    LOGIN TO PORTAL
+                  </button>
+
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 px-4 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
+                  >
+                    <span>BOOK A DEMO</span>
+                    <ArrowRight size={14} />
+                  </Link>
                 </div>
+              </div>
+
+              {/* Drawer Footer */}
+              <div className="p-6 border-t border-gray-100 bg-gray-50/70 space-y-3 text-xs text-gray-600">
+                <div className="flex items-center gap-2.5">
+                  <Mail size={15} className="text-blue-600" />
+                  <span>nemvolltd@gmail.com</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Phone size={15} className="text-blue-600" />
+                  <span>{COMPANY_INFO.phone}</span>
+                </div>
+                <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-200/60">
+                  © 2026 Nemvol Ltd. All rights reserved.
+                </p>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+
+      {/* Client Portal Login Modal */}
+      <AnimatePresence>
+        {isLoginModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsLoginModalOpen(false)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 z-10"
+            >
+              <button
+                onClick={() => setIsLoginModalOpen(false)}
+                className="absolute top-5 right-5 p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
+                <Lock size={22} />
+              </div>
+
+              <h3 className="text-xl font-bold text-gray-900">Client Portal Login</h3>
+              <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                Access your real-time project milestones, roadmap sprints, and deliverable artifacts.
+              </p>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  alert('Portal authentication service will connect to your project workspace.')
+                  setIsLoginModalOpen(false)
+                }}
+                className="mt-6 space-y-4"
+              >
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1.5">
+                    Work Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="name@company.com"
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-600">
+                      Password
+                    </label>
+                    <span className="text-xs text-blue-600 hover:underline cursor-pointer">
+                      Forgot?
+                    </span>
+                  </div>
+                  <input
+                    type="password"
+                    required
+                    placeholder="••••••••"
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-blue-500/20"
+                >
+                  SIGN IN TO PORTAL
+                </button>
+              </form>
+
+              <div className="mt-6 pt-5 border-t border-gray-100 text-center">
+                <p className="text-xs text-gray-500">
+                  Looking to start a new build?{' '}
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsLoginModalOpen(false)}
+                    className="font-bold text-blue-600 hover:underline"
+                  >
+                    Book a demo
+                  </Link>
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
-
 
 export default Header

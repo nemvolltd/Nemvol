@@ -11,7 +11,7 @@ const BuildCard = ({ title, description, icon: Icon, className, delay, dark = fa
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
       className={`relative group overflow-hidden rounded-[2.5rem] p-8 flex flex-col justify-between border transition-all duration-500 ${
         dark 
-          ? 'bg-gray-900 border-gray-800 text-white hover:bg-gray-800' 
+          ? 'bg-[#002752] border-blue-900/60 text-white hover:bg-[#003366] shadow-xl shadow-blue-950/25' 
           : 'bg-white border-gray-100 text-gray-900 hover:border-blue-100 hover:shadow-2xl hover:shadow-blue-500/5'
       } ${className}`}
     >
@@ -22,14 +22,14 @@ const BuildCard = ({ title, description, icon: Icon, className, delay, dark = fa
           </div>
           <motion.div 
             whileHover={{ rotate: 45 }}
-            className={`p-2 rounded-full border transition-colors ${dark ? 'border-white/10 group-hover:bg-white group-hover:text-gray-900' : 'border-gray-100 group-hover:bg-blue-600 group-hover:text-white'}`}
+            className={`p-2 rounded-full border transition-colors ${dark ? 'border-white/20 group-hover:bg-white group-hover:text-[#002752]' : 'border-gray-100 group-hover:bg-blue-600 group-hover:text-white'}`}
           >
             <ArrowUpRight size={20} />
           </motion.div>
         </div>
         
         <h3 className="text-2xl font-bold mb-3 tracking-tight">{title}</h3>
-        <p className={`text-base leading-relaxed ${dark ? 'text-gray-400' : 'text-gray-500'}`}>
+        <p className={`text-base leading-relaxed ${dark ? 'text-blue-100/75' : 'text-gray-500'}`}>
           {description}
         </p>
       </div>

@@ -45,10 +45,10 @@ const BackToTop = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-lg whitespace-nowrap shadow-xl"
+                    className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-[#002752] text-white text-xs font-bold rounded-lg whitespace-nowrap shadow-xl"
                   >
                     Chat with an MVP Strategist
-                    <div className="absolute top-1/2 -translate-y-1/2 left-full w-2 h-2 bg-gray-900 rotate-45 -ml-1" />
+                    <div className="absolute top-1/2 -translate-y-1/2 left-full w-2 h-2 bg-[#002752] rotate-45 -ml-1" />
                   </motion.div>
                 )}
               </AnimatePresence>
